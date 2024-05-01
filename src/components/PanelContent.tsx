@@ -45,9 +45,18 @@ export const PanelContent: React.FC<PanelContentProps> = ({
     // Emit an event to notify that the selected style has changed
     addons.getChannel().emit(EVENTS.CHANGE, { selectedStyle });
 
-    const classChangeEvent = new CustomEvent('customPanel/classChange', { detail: { selectedStyle } });
-    document.dispatchEvent(classChangeEvent);
+    // const classChangeEvent = new CustomEvent('customPanel/classChange', { detail: { selectedStyle } });
+    // window.parent.dispatchEvent(classChangeEvent);
+
+    // const iframe:any = document.getElementById('storybook-preview-iframe');
+    // const dataToSend = { message: selectedStyle };
+    // iframe.contentWindow.postMessage(dataToSend, '*'); // Specify the target origin
   };
+
+  window.addEventListener('message', (detail:any) => {
+    console.log('inside panel',detail);
+  });
+  
 
   return (
     <Container>
