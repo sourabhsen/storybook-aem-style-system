@@ -1,5 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Header } from "./Header";
+import React, { useEffect } from "react";
+
+
+// Inside your HTML-based Storybook story
+document.addEventListener('customPanel/classChange', (event:any) => {
+  const selectedClass = event.detail.selectedClass;
+  // Use the selected class in your story
+});
 
 const meta: Meta<typeof Header> = {
   title: "Example/Header",
@@ -21,4 +29,9 @@ export const LoggedIn: Story = {
   },
 };
 
+export const yy = () => {
+  return (<>test</>)
+};
+
 export const LoggedOut: Story = {};
+

@@ -44,6 +44,9 @@ export const PanelContent: React.FC<PanelContentProps> = ({
 
     // Emit an event to notify that the selected style has changed
     addons.getChannel().emit(EVENTS.CHANGE, { selectedStyle });
+
+    const classChangeEvent = new CustomEvent('customPanel/classChange', { detail: { selectedStyle } });
+    document.dispatchEvent(classChangeEvent);
   };
 
   return (
