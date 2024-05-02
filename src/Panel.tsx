@@ -9,11 +9,23 @@ interface PanelProps {
   active: boolean;
 }
 
+// Function to recursively extract cq:styleClasses values from JSON
+function extractStyleClasses(obj: any, result: any = []) {
+  for (const key in obj) {
+      if (key === 'cq:styleClasses') {
+          result.push(obj[key]);
+      } else if (typeof obj[key] === 'object') {
+          extractStyleClasses(obj[key], result);
+      }
+  }
+  return result;
+}
+
+
 export const Panel: React.FC<PanelProps> = (props) => {
   // https://storybook.js.org/docs/react/addons/addons-api#useaddonstate
   const [results, setState] = useAddonState(ADDON_ID, {
-    danger: [],
-    warning: [],
+    cssClass: []
   });
 
   // https://storybook.js.org/docs/react/addons/addons-api#usechannel
@@ -24,7 +36,13 @@ export const Panel: React.FC<PanelProps> = (props) => {
   const paramData = useParameter<any>(PARAM_KEY, "");
 
   useEffect(() => {
-    if(paramData) console.log('paramData--', paramData);
+    if(paramData) {
+       console.log('paramData--22', paramData);
+       const val = extractStyleClasses(paramData.policy);
+       emit(EVENTS.RESULT, {
+        cssClass: val
+      })
+    }
   }, [paramData])
 
   return (
