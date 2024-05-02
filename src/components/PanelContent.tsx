@@ -56,12 +56,12 @@ export const PanelContent: React.FC<PanelContentProps> = ({
       <Container>
         <Select value={selectedStyle} onChange={handleChange}>
           <option value="">Select a style</option>
-          <option value="btn-primary">Primary Button</option>
-          <option value="btn-secondary">Secondary Button</option>
-          <option value="btn-tertiary">Tertiary Button</option>
+          {/* Mapping over the results.cssClass array to create option tags */}
+          {results?.cssClass?.length > 0 && results?.cssClass.map((cssClass, index) => (
+            <option key={index} value={cssClass}>{cssClass}</option>
+          ))}
         </Select>
       </Container>
-      <h2>{results.cssClass.length}</h2>
     </>
 
   );
