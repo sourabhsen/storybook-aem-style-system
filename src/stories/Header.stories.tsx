@@ -5,7 +5,6 @@ import {EVENTS} from '../constants'
 
 // Listen for changes in addon value
 window.addEventListener('message', (detail:any) => {
-  console.log('inside stories', detail);
   const detailsObj = detail?.data || {};
   const eventType = JSON.parse(detailsObj).event?.type; // Get the new value from the event
   const val = JSON.parse(detailsObj).event;
@@ -21,6 +20,9 @@ const meta: Meta<typeof Header> = {
   parameters: {
     // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen",
+    ['myAddonParameter']: {
+      policy: './storybook-assets/policies/button.json'
+    }
   },
 };
 

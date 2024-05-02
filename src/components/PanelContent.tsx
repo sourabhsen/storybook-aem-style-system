@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { styled, themes, convert } from "@storybook/theming";
 import { TabsState, Placeholder, Button, Div } from "@storybook/components";
-import { ADDON_ID, EVENTS } from "../constants";
+import { ADDON_ID, EVENTS, PARAM_KEY } from "../constants";
 import { addons } from '@storybook/addons';
+import { useParameter } from "@storybook/manager-api";
 
 export const Container = styled.div`
   padding: 10px;
@@ -44,19 +45,11 @@ export const PanelContent: React.FC<PanelContentProps> = ({
 
     // Emit an event to notify that the selected style has changed
     addons.getChannel().emit(EVENTS.CHANGE, { selectedStyle });
-
-    // const classChangeEvent = new CustomEvent('customPanel/classChange', { detail: { selectedStyle } });
-    // window.parent.dispatchEvent(classChangeEvent);
-
-    // const iframe:any = document.getElementById('storybook-preview-iframe');
-    // const dataToSend = { message: selectedStyle };
-    // iframe.contentWindow.postMessage(dataToSend, '*'); // Specify the target origin
   };
 
   window.addEventListener('message', (detail:any) => {
-    console.log('inside panel',detail);
+    // console.log('inside panel',detail);
   });
-  
 
   return (
     <Container>
