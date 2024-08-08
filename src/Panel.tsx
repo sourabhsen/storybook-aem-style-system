@@ -13,7 +13,7 @@ interface PanelProps {
 function extractStyleClasses(obj: any, result: any = []) {
   for (const key in obj) {
       if (key === 'cq:styleClasses') {
-          result.push(obj[key]);
+          result.push(obj['cq:styleLabel']);
       } else if (typeof obj[key] === 'object') {
           extractStyleClasses(obj[key], result);
       }
