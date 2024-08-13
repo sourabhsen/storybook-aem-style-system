@@ -39,23 +39,23 @@ export const PanelContent: React.FC<PanelContentProps> = ({
   clearData,
 }) => {
 
-  const [selectedStyle, setSelectedStyle] = useState('');
-
-
-  const handleChange = (event: any) => {
-    const selectedStyle = event.target.value;
-    console.log('selectedStyle', selectedStyle);
-    setSelectedStyle(selectedStyle);
-
-    // Emit an event to notify that the selected style has changed
-    addons.getChannel().emit(EVENTS.CHANGE, { selectedStyle });
-  };
-
   window.addEventListener('message', (detail: any) => {
     // console.log('inside panel',detail);
   });
 
   const DropdownComponent = ({ styles }: any) => {
+
+    const [selectedValue, setSelectedValue] = useState('');
+
+    const handleChange = (event: any) => {
+      const selectedStyle = event.target.value;
+      console.log('selectedStyle', selectedStyle);
+      setSelectedValue(event.target.value);
+  
+      // Emit an event to notify that the selected style has changed
+      addons.getChannel().emit(EVENTS.CHANGE, { selectedStyle });
+    };
+
     // Group styles by their groupLabel
     const groupedStyles = styles.reduce((acc: any, style: any) => {
       const { groupLabel, key, value } = style;
@@ -67,7 +67,7 @@ export const PanelContent: React.FC<PanelContentProps> = ({
     }, {});
 
     return (
-      <select onChange={handleChange}>
+      <select value={selectedValue} onChange={handleChange}>
         {Object.keys(groupedStyles).map((groupLabel) => (
           <optgroup key={groupLabel} label={groupLabel}>
             {groupedStyles[groupLabel].map((style: any) => (
