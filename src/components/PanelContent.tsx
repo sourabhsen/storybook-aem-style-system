@@ -30,6 +30,9 @@ interface PanelContentProps {
  * Checkout https://github.com/storybookjs/storybook/blob/next/code/addons/jest/src/components/Panel.tsx
  * for a real world example
  */
+
+
+
 export const PanelContent: React.FC<PanelContentProps> = ({
   results,
   fetchData,
@@ -37,6 +40,7 @@ export const PanelContent: React.FC<PanelContentProps> = ({
 }) => {
 
   const [selectedStyle, setSelectedStyle] = useState('');
+
 
   const handleChange = (event: any) => {
     const selectedStyle = event.target.value;
@@ -51,16 +55,36 @@ export const PanelContent: React.FC<PanelContentProps> = ({
     // console.log('inside panel',detail);
   });
 
+  const DropdownComponent = ({ styles }: any) => {
+    // Group styles by their groupLabel
+    const groupedStyles = styles.reduce((acc: any, style: any) => {
+      const { groupLabel, key, value } = style;
+      if (!acc[groupLabel]) {
+        acc[groupLabel] = [];
+      }
+      acc[groupLabel].push({ key, value });
+      return acc;
+    }, {});
+
+    return (
+      <select>
+        {Object.keys(groupedStyles).map((groupLabel) => (
+          <optgroup key={groupLabel} label={groupLabel}>
+            {groupedStyles[groupLabel].map((style: any) => (
+              <option key={style.key} value={style.key}>
+               {style.value}
+              </option>
+            ))}
+          </optgroup>
+        ))}
+      </select>
+    );
+  };
+
   return (
     <>
       <Container>
-        <Select value={selectedStyle} onChange={handleChange}>
-          <option value="">Select a style</option>
-          {/* Mapping over the results.cssClass array to create option tags */}
-          {results?.cssClass?.length > 0 && results?.cssClass.map((cssClass, index) => (
-            <option key={index} value={cssClass}>{cssClass}</option>
-          ))}
-        </Select>
+      <DropdownComponent styles={results.cssClass} />
       </Container>
     </>
 

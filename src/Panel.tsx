@@ -10,14 +10,29 @@ interface PanelProps {
 }
 
 // Function to recursively extract cq:styleClasses values from JSON
-function extractStyleClasses(obj: any, result: any = []) {
-  for (const key in obj) {
-      if (key === 'cq:styleClasses') {
-          result.push(obj['cq:styleLabel']);
-      } else if (typeof obj[key] === 'object') {
-          extractStyleClasses(obj[key], result);
+function extractStyleClasses(obj: any) {
+  let result: any = [];
+
+  function traverse(node: any, groupLabel: any = null) {
+      if (node && typeof node === 'object') {
+          if (node['cq:styleClasses'] && node['cq:styleLabel']) {
+              result.push({
+                  groupLabel: groupLabel,
+                  value: node['cq:styleLabel'],
+                  key: node['cq:styleClasses']
+              });
+          }
+          for (let key in node) {
+              if (node.hasOwnProperty(key)) {
+                  // If the current node contains "cq:styleGroupLabel", pass it down as the groupLabel
+                  const newGroupLabel = node['cq:styleGroupLabel'] || groupLabel;
+                  traverse(node[key], newGroupLabel);
+              }
+          }
       }
   }
+
+  traverse(obj);
   return result;
 }
 
@@ -36,10 +51,10 @@ export const Panel: React.FC<PanelProps> = (props) => {
   const paramData = useParameter<any>(PARAM_KEY, "");
 
   useEffect(() => {
-    if(paramData) {
-       console.log('paramData--22', paramData);
-       const val = extractStyleClasses(paramData.policy);
-       emit(EVENTS.RESULT, {
+    if (paramData) {
+      // console.log('paramData--22', paramData);
+      const val = extractStyleClasses(paramData.policy);
+      emit(EVENTS.RESULT, {
         cssClass: val
       })
     }
