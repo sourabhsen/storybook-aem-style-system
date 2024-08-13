@@ -67,7 +67,7 @@ export const PanelContent: React.FC<PanelContentProps> = ({
     }, {});
 
     return (
-      <select>
+      <select onChange={handleChange}>
         {Object.keys(groupedStyles).map((groupLabel) => (
           <optgroup key={groupLabel} label={groupLabel}>
             {groupedStyles[groupLabel].map((style: any) => (
